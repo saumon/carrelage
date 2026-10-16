@@ -1,0 +1,61 @@
+name: Qualité
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validation HTML, CSS et SVG
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Valider avec le validateur Nu du W3C
+        run: npx --yes -p vnu-jar@26.10.12 vnu --also-check-css --also-check-svg index.html style.css images/*.svg
+
+      - name: Vérifier l'absence de JavaScript
+        run: |
+          if grep -niE '<script' index.html; then
+            echo "::error file=index.html::La page ne doit contenir aucune balise <script>."
+            exit 1
+          fi
+
+  lighthouse:
+    name: Audit Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Lancer Lighthouse CI (seuils dans lighthouserc.json)
+        run: npx --yes @lhci/cli@0.15.1 autorun
+
+      - name: Conserver le rapport Lighthouse
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: rapport-lighthouse
+          path: .lighthouseci/
+          include-hidden-files: true
+          if-no-files-found: warn
