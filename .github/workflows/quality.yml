@@ -31,10 +31,10 @@ jobs:
       - name: Valider avec le validateur Nu du W3C
         run: npx --yes -p vnu-jar@26.10.12 vnu --also-check-css --also-check-svg index.html style.css images/*.svg
 
-      - name: Vérifier l'absence de JavaScript
+      - name: Vérifier que le seul JavaScript est script.js
         run: |
-          if grep -niE '<script' index.html; then
-            echo "::error file=index.html::La page ne doit contenir aucune balise <script>."
+          if grep -niE '<script' index.html | grep -vE '^[0-9]+:\s*<script src="script\.js"></script>\s*$'; then
+            echo "::error file=index.html::Seul <script src=\"script.js\"> est autorisé : pas de script inline ni tiers."
             exit 1
           fi
 

@@ -5,7 +5,7 @@
 [![Lighthouse](https://img.shields.io/badge/Lighthouse-perf%20%E2%89%A5%2090%20%C2%B7%20a11y%2C%20BP%2C%20SEO%20%E2%89%A5%2095-0cce6b?logo=lighthouse&logoColor=white)](lighthouserc.json)
 [![HTML valide W3C](https://img.shields.io/badge/HTML-valide%20W3C-e34f26?logo=html5&logoColor=white)](https://validator.w3.org/nu/)
 [![CSS valide W3C](https://img.shields.io/badge/CSS-valide%20W3C-663399?logo=css&logoColor=white)](https://validator.w3.org/nu/)
-[![Sans JavaScript](https://img.shields.io/badge/JavaScript-aucun-1f2a30?logo=javascript&logoColor=white)](.github/workflows/quality.yml)
+[![JavaScript minimal](https://img.shields.io/badge/JavaScript-1%20script%20optionnel-1e4a41?logo=javascript&logoColor=white)](.github/workflows/quality.yml)
 
 Landing page de **TopCarrelage**, une équipe de 5 experts en pose de carrelage. Une seule page statique, responsive, pensée pour un objectif : que le visiteur **appelle**.
 
@@ -19,7 +19,7 @@ Landing page de **TopCarrelage**, une équipe de 5 experts en pose de carrelage.
 - **Appel en un geste** : numéro en lien `tel:` dès le premier écran, bouton d'appel fixe sur mobile, bloc de contact en fin de page.
 - **Sections** : services, équipe des 5 experts, preuves de confiance, contact (horaires, zone d'intervention).
 - **Responsive** de 320 px au grand écran, conçu d'abord pour le mobile.
-- **Rapide et autonome** : HTML et CSS uniquement, aucun JavaScript, aucun service tiers, moins de 15 Ko transférés.
+- **Rapide et autonome** : HTML et CSS, un seul petit script optionnel (animation de pose des carreaux du hero, la page reste complète sans lui), polices hébergées sur le site, aucun service tiers.
 - **Accessible** : hiérarchie de titres, contrastes suffisants, cibles tactiles d'au moins 44 px, page déclarée en français.
 
 ## Démarrage rapide
@@ -54,7 +54,7 @@ Chaque push, sur toutes les branches, et chaque pull request déclenchent le wor
 
 | Job | Vérifie | Échoue si |
 |---|---|---|
-| Validation HTML, CSS et SVG | `index.html`, `style.css` et `images/*.svg` avec le [validateur Nu du W3C](https://validator.github.io/validator/) ; absence de `<script>` | une erreur de validation est trouvée, ou la page contient du JavaScript |
+| Validation HTML, CSS et SVG | `index.html`, `style.css` et `images/*.svg` avec le [validateur Nu du W3C](https://validator.github.io/validator/) ; aucun `<script>` autre que `script.js` | une erreur de validation est trouvée, ou la page contient du JavaScript |
 | Audit Lighthouse | la page en mode mobile, médiane de 3 exécutions | performance < 90, ou accessibilité, bonnes pratiques ou SEO < 95 |
 
 Le rapport Lighthouse complet, en HTML et JSON, est téléchargeable dans l'artefact `rapport-lighthouse` de chaque exécution.
@@ -69,8 +69,8 @@ Ces commandes demandent Node.js. La validation demande aussi Java, et Lighthouse
 # Validation HTML, CSS et SVG
 npx -p vnu-jar@26.10.12 vnu --also-check-css --also-check-svg index.html style.css images/*.svg
 
-# Absence de JavaScript (aucune sortie attendue)
-grep -niE '<script' index.html
+# Aucun script autre que script.js (aucune sortie attendue)
+grep -niE "<script" index.html | grep -vE "script\.js"
 
 # Audit Lighthouse avec les seuils de la CI (rapports dans .lighthouseci/)
 npx @lhci/cli@0.15.1 autorun
