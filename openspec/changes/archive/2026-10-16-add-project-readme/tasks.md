@@ -18,7 +18,7 @@
 
 ## 4. Vérification sur GitHub
 
-- [ ] 4.1 Après push sur `dev`, vérifier que les jobs `validate` et `lighthouse` passent sur GitHub Actions, que le rapport Lighthouse est téléchargeable depuis le run et que le badge CI du README s'affiche à l'état « passing » ; si les bonnes pratiques passent sous 0,95 à cause du favicon, s'arrêter et proposer l'ajout d'un favicon
+- [x] 4.1 Après push sur `dev`, vérifier que les jobs `validate` et `lighthouse` passent sur GitHub Actions, que le rapport Lighthouse est téléchargeable depuis le run et que le badge CI du README s'affiche à l'état « passing » ; si les bonnes pratiques passent sous 0,95 à cause du favicon, s'arrêter et proposer l'ajout d'un favicon
 
 ## Workflow follow-up
 
